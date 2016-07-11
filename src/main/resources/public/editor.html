@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="editor.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Map Editor</h1>
+</header>
+
+<nav>
+    Button<br>
+    Button<br>
+    Button
+</nav>
+
+<section>
+    <canvas id="mapCanvas" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+
+    <script>
+        width = 700;
+        height = 700;
+        initializeCanvas(width, height);
+        document.getElementById("mapCanvas").addEventListener("click", printMousePos);
+    </script>
+</section>
+
+<footer>
+    Part of the Racegrid project
+</footer>
+
+</body>
+</html>
