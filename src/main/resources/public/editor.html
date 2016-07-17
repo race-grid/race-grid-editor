@@ -14,27 +14,27 @@
 </header>
 
 <nav>
-    Button<br>
-    Button<br>
-    Button
+    <div><button id="make-wall-button">Make wall</button> </div>
+    <div><button id="end-wall-button">End wall</button> </div>
+    <div><button id="connect-wall-button">Connect to start</button></div>
+    <div><button id="clear-walls-button">Clear ALL walls</button></div>
+    <input type="range" id="grid-size-slider" value="40">
 </nav>
 
 <section>
-    <canvas id="mapCanvas" style="border:1px solid #d3d3d3;">
+    <canvas id="map-canvas" style="border:1px solid #d3d3d3;">
         Your browser does not support the HTML5 canvas tag.
     </canvas>
-
-    <script>
-        width = 700;
-        height = 700;
-        initializeCanvas(width, height);
-        document.getElementById("mapCanvas").addEventListener("click", printMousePos);
-    </script>
 </section>
 
 <footer>
     Part of the Racegrid project
 </footer>
 
+<script>
+    racegrid.init();
+</script>
+
 </body>
+
 </html>
