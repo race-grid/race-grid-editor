@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Editor</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="grid-canvas.js"></script>
     <script src="editor.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,7 +19,7 @@
     <div><button id="end-wall-button">End wall</button> </div>
     <div><button id="connect-wall-button">Connect to start</button></div>
     <div><button id="clear-walls-button">Clear ALL walls</button></div>
-    <input type="range" id="grid-size-slider" value="40">
+    <input type="range" id="grid-size-slider" value="20">
 </nav>
 
 <section>
@@ -32,7 +33,7 @@
 </footer>
 
 <script>
-    racegrid.init();
+    editor.init();
 </script>
 
 </body>

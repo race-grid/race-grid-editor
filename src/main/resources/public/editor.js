@@ -1,17 +1,13 @@
-var racegrid = (function ($) {
+var editor = (function ($) {
 
-    var $canvas;
     var $slider;
 
-    var squareSize = 10;
-    var GRID_WIDTH = 10;
-    var GRID_HEIGHT = 10;
+    var GRID_WIDTH = 50;
+    var GRID_HEIGHT = 50;
 
-    var walls = [
-        {from: {x: 2, y: 2}, to: {x: 1, y: 4}},
-        {from: {x: 1, y: 4}, to: {x: 2, y: 6}}
-    ];
+    var walls = [];
 
+    // States
     var DEFAULT = 0;
     var STARTING_WALL = 1;
     var ENDING_WALL = 2;
@@ -25,13 +21,13 @@ var racegrid = (function ($) {
     function connectWall() {
         var wall = {from: wallStart, to: polygonStart};
         walls.push(wall);
-        drawCanvas();
+        redraw();
         state = DEFAULT;
     }
 
     function initEventListeners() {
         $slider = $("#grid-size-slider");
-        $slider.on("input change", drawCanvas);
+        $slider.on("input change", redraw);
         $("#make-wall-button").on("click", function () {
             state = STARTING_WALL;
         });
@@ -41,60 +37,19 @@ var racegrid = (function ($) {
         $("#connect-wall-button").on("click", connectWall)
         $("#clear-walls-button").on("click", function () {
             walls = [];
-            drawCanvas();
+            redraw();
         })
     }
 
-    function initCanvas() {
-        $canvas = $("#map-canvas");
-        $canvas.on('click', onClickCanvas);
-        drawCanvas();
-    }
-
-    function drawCanvas() {
-        squareSize = $slider.val();
-        $canvas.attr("width", gridAsPixel(GRID_WIDTH));
-        $canvas.attr("height", gridAsPixel(GRID_HEIGHT));
-        drawGrid();
-        drawWalls();
-    }
-
-    function drawGrid() {
-        var ctx = $canvas[0].getContext("2d");
-        ctx.strokeStyle = "gray";
-        var line;
-        for (var x = 0; x < GRID_WIDTH; x++) {
-            line = {from: {x: x, y: 0}, to: {x: x, y: GRID_HEIGHT}};
-            drawLine(ctx, line)
-        }
-
-        for (var y = 0; y < GRID_HEIGHT; y++) {
-            line = {from: {x: 0, y: y}, to: {x: GRID_WIDTH, y: y}};
-            drawLine(ctx, line);
-        }
-    }
-
-    function drawWalls() {
-        var ctx = $canvas[0].getContext("2d");
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 4;
+    function redraw() {
+        gridCanvas.setCellSize($slider.val());
+        gridCanvas.drawGrid();
         walls.forEach(function (wall) {
-            drawLine(ctx, wall)
+            gridCanvas.drawWall(wall)
         })
     }
 
-    function drawLine(ctx, line) {
-        ctx.beginPath();
-        ctx.moveTo(gridAsPixel(line.from.x), gridAsPixel(line.from.y));
-        ctx.lineTo(gridAsPixel(line.to.x), gridAsPixel(line.to.y));
-        ctx.stroke();
-    }
-
-    function onClickCanvas(event) {
-        var coordinate = {
-            x: pixelAsGrid(event.offsetX),
-            y: pixelAsGrid(event.offsetY)
-        };
+    function onClickCanvas(coordinate) {
         switch (state) {
             case DEFAULT:
                 console.log(coordinate);
@@ -107,24 +62,23 @@ var racegrid = (function ($) {
             case ENDING_WALL:
                 var wall = {from: wallStart, to: coordinate};
                 walls.push(wall);
-                drawCanvas();
+                redraw();
                 wallStart = coordinate;
                 break;
         }
     }
 
-    function pixelAsGrid(pixel) {
-        return pixel / squareSize
-    }
-
-    function gridAsPixel(grid) {
-        return grid * squareSize
-    }
-
     return {
         init: function () {
             initEventListeners();
-            initCanvas();
+            var settings = {
+                width: GRID_WIDTH,
+                height: GRID_HEIGHT,
+                cellSize: $slider.val(),
+                $canvasElement: $("canvas"),
+                onClick: onClickCanvas
+            };
+            gridCanvas.init(settings);
         }
     }
 })($);
