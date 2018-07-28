@@ -34,7 +34,7 @@ var editor = (function ($) {
         $("#end-wall-button").on("click", function () {
             state = DEFAULT;
         });
-        $("#connect-wall-button").on("click", connectWall)
+        $("#connect-wall-button").on("click", connectWall);
         $("#clear-walls-button").on("click", function () {
             walls = [];
             redraw();
